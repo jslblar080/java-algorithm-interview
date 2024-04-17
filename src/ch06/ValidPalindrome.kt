@@ -2,13 +2,12 @@ package ch06
 
 class Solution {
     fun isPalindrome(s: String): Boolean {
-        val str = s.replace("[^a-zA-Z0-9]".toRegex(), "").toLowerCase()
-        val bytes = str.toByteArray()
-        val len = bytes.size
+        val str = s.filter{ it.isLetterOrDigit()}.toLowerCase()
+        val len = str.length
         val mid = len / 2
 
         for (i in 0 until mid) {
-            if (bytes[i] != bytes[len - i - 1]) {
+            if (str[i] != str[len - i - 1]) {
                 return false
             }
         }
@@ -19,7 +18,7 @@ class Solution {
 
 fun main() {
     val solution = Solution()
-    println(solution.isPalindrome("A man, a plan, a canal: Panama"))
-    println(solution.isPalindrome("race a car"))
-    println(solution.isPalindrome(" "))
+    println(solution.isPalindrome("A man, a plan, a canal: Panama")) // true
+    println(solution.isPalindrome("race a car")) // false
+    println(solution.isPalindrome(" ")) // true
 }
