@@ -2,91 +2,42 @@ package ch06
 
 class Solution3 {
     fun reorderLogFiles(logs: Array<String>): Array<String> {
-        val len = logs.size
-        val logsOriginal = logs.copyOf()
+        val letterLogs = mutableListOf<String>()
+        val digitLogs = mutableListOf<String>()
 
-        fun isLetterLogs(s: String): Boolean {
-            val elmList = s.split(" ")
+        for (log in logs) {
+            val elmList = log.split(" ")
+            val contents = elmList.subList(1, elmList.size)
 
-            for (elm in elmList.subList(1, elmList.size)) {
-                if (elm != elm.toLowerCase()) { return false }
-                if (elm != elm.filter { it.isLetter() }) { return false }
-            }
-
-            return true
-        }
-
-        fun isDigitLogs(s: String): Boolean {
-            val elmList = s.split(" ")
-
-            for (elm in elmList.subList(1, elmList.size)) {
-                if (elm != elm.filter { it.isDigit() }) { return false }
-            }
-
-            return true
-        }
-
-        fun contents(s: String): String {
-            val elmList = s.split(" ")
-
-            return elmList.subList(1, elmList.size).joinToString(" ")
-        }
-
-        fun identifier(s: String): String {
-            val elmList = s.split(" ")
-
-            return elmList[0]
-        }
-
-        // The letter-logs come before all digit-logs.
-        for (i in 0 until len-1) {
-            for (j in i+1 until len) {
-                if (isDigitLogs(logs[i]) && isLetterLogs(logs[j])) {
-                    val temp = logs[i]
-                    logs[i] = logs[j]
-                    logs[j] = temp
+            if (contents == contents.filter { it == it.filter { char -> char.isLetter() } }) {
+                if (contents == contents.map { it.toLowerCase() }) {
+                    letterLogs.add(log)
                 }
             }
-        }
 
-        // The letter-logs are sorted lexicographically by their contents.
-        // If their contents are the same, then sort them lexicographically by their identifiers.
-        for (i in 0 until len-1) {
-            for (j in i+1 until len) {
-                if (isLetterLogs(logs[i]) && isLetterLogs(logs[j])) {
-                    if (contents(logs[i]) > contents(logs[j])) {
-                        val temp = logs[i]
-                        logs[i] = logs[j]
-                        logs[j] = temp
-                    }
-
-                    if (contents(logs[i]) == contents(logs[j])) {
-                        if (identifier(logs[i]) > identifier(logs[j])) {
-                            val temp = logs[i]
-                            logs[i] = logs[j]
-                            logs[j] = temp
-                        }
-                    }
-                }
+            if (contents == contents.filter { it == it.filter { char -> char.isDigit() } }) {
+                digitLogs.add(log)
             }
         }
 
-        // The digit-logs maintain their relative ordering.
-        for (i in 0 until len-1) {
-            for (j in i+1 until len) {
-                if (isDigitLogs(logs[i]) && isDigitLogs(logs[j])) {
-                    val idxI = logsOriginal.indexOf(logs[i])
-                    val idxJ = logsOriginal.indexOf(logs[j])
-                    if (idxI > idxJ) {
-                        val temp = logs[i]
-                        logs[i] = logs[j]
-                        logs[j] = temp
-                    }
-                 }
-            }
-        }
+        letterLogs.sortWith(Comparator { i, j ->
+            val splitI = i.split(" ")
+            val contentsI = splitI.subList(1, splitI.size).joinToString(" ")
+            val identifierI = splitI[0]
+            val splitJ = j.split(" ")
+            val contentsJ = splitJ.subList(1, splitJ.size).joinToString(" ")
+            val identifierJ = splitJ[0]
 
-        return logs
+            val cmp = contentsI.compareTo(contentsJ)
+            if (cmp == 0) {
+                identifierI.compareTo(identifierJ)
+            }
+            else {
+                cmp
+            }
+        })
+
+        return (letterLogs + digitLogs).toTypedArray()
     }
 }
 
