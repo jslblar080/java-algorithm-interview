@@ -10,10 +10,9 @@ class Solution3 {
             val contents = elmList.subList(1, elmList.size)
 
             // if (contents == contents.filter { it == it.filter { char -> char.isLetter() } }) {
-            if (contents[0][0].isLetter()) {
-                if (contents == contents.map { it.toLowerCase() }) {
-                    letterLogs.add(log)
-                }
+                // if (contents == contents.map { it.toLowerCase() }) {
+            if (contents[0][0].isLetter() && contents[0][0].isLowerCase()) {
+                letterLogs.add(log)
             }
 
             // if (contents == contents.filter { it == it.filter { char -> char.isDigit() } }) {
