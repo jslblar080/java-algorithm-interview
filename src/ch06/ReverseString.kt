@@ -9,7 +9,7 @@ class Solution2 {
             s2[len - 1 - i] = s[i]
         }
 
-        for (i in 0..len-1) {
+        for (i in 0 until len) {
             s[i] = s2[i]
         }
 
