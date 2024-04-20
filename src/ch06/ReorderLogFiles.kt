@@ -9,13 +9,15 @@ class Solution3 {
             val elmList = log.split(" ")
             val contents = elmList.subList(1, elmList.size)
 
-            if (contents == contents.filter { it == it.filter { char -> char.isLetter() } }) {
+            // if (contents == contents.filter { it == it.filter { char -> char.isLetter() } }) {
+            if (contents[0][0].isLetter()) {
                 if (contents == contents.map { it.toLowerCase() }) {
                     letterLogs.add(log)
                 }
             }
 
-            if (contents == contents.filter { it == it.filter { char -> char.isDigit() } }) {
+            // if (contents == contents.filter { it == it.filter { char -> char.isDigit() } }) {
+            if (contents[0][0].isDigit()) {
                 digitLogs.add(log)
             }
         }
